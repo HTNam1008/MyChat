@@ -73,7 +73,7 @@ public class MediaGridActivity extends AppCompatActivity {
     protected void showMediaGridView(String myID, String userID) {//userID can be group id
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         //get MESSAGE collection
-        CollectionReference ref = db.collection("messages");
+        CollectionReference ref = db.collection("test_messages");
         //
         Query query;
         if (isGroup) query = ref.whereIn("receiver", Arrays.asList(myID, userID))

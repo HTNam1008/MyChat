@@ -41,7 +41,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MoreFragment extends Fragment  {
-    String[] items = new String[]{"Account", "Chats", "Appearance", "Notification", "Privacy", "Data Usage", "Help", "Invite Your Friends", "Sign out"};
+    String[] items = new String[]{"Account", "Chats", "Appearance", "test_notification", "Privacy", "Data Usage", "Help", "Invite Your Friends", "Sign out"};
 
     Integer[] icons = {R.drawable.ic_avt, R.drawable.ic_chats, R.drawable.ic_apperance, R.drawable.ic_noti, R.drawable.ic_privacy, R.drawable.ic_data, R.drawable.ic_help, R.drawable.ic_invite, R.drawable.ic_sign_out};
     ListView listView;
@@ -173,7 +173,7 @@ public class MoreFragment extends Fragment  {
 
 
     private void getInfoUser() {
-        db.collection("users").document(user.getUid())
+        db.collection("test_users").document(user.getUid())
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override

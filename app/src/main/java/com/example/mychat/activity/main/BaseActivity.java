@@ -17,7 +17,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseFirestore database = FirebaseFirestore.getInstance();
-        documentReference=database.collection("users").document(firebaseAuth.getCurrentUser().getUid().toString());
+        documentReference=database.collection("test_users").document(firebaseAuth.getCurrentUser().getUid().toString());
     }
 
     @Override

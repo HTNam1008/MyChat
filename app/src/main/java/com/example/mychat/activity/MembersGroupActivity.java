@@ -46,7 +46,7 @@ public class MembersGroupActivity extends AppCompatActivity {
         });
 
         db = FirebaseFirestore.getInstance();
-        DocumentReference docRef = db.collection("groups").document(groupID);
+        DocumentReference docRef = db.collection("test_groups").document(groupID);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

@@ -251,7 +251,7 @@ public class ChatSreenActivity extends BaseActivity {
     }
 
     private void getInfoUser() {
-        db.collection("users").document(userReceiverID)
+        db.collection("test_users").document(userReceiverID)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -305,7 +305,7 @@ public class ChatSreenActivity extends BaseActivity {
     private void getInfoGroup() {
         id.clear();
         img.clear();
-        db.collection("groups").document(userReceiverID)
+        db.collection("test_groups").document(userReceiverID)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -416,7 +416,7 @@ public class ChatSreenActivity extends BaseActivity {
                 if(isGroup){
                     txtStatus.setVisibility(View.GONE);
                 }
-                DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(userReceiverID);
+                DocumentReference docRef = FirebaseFirestore.getInstance().collection("test_users").document(userReceiverID);
 
                 docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
@@ -644,7 +644,7 @@ public class ChatSreenActivity extends BaseActivity {
     }
 
     private void sendVideo(String sender, String receiver, String message) {
-        CollectionReference usersCollection = db.collection("messages");
+        CollectionReference usersCollection = db.collection("test_messages");
 
         HashMap<String, Object> messageData = new HashMap<>();
         Timestamp timestamp = Timestamp.now();
@@ -660,7 +660,7 @@ public class ChatSreenActivity extends BaseActivity {
     }
 
     private void sendImage(String sender, String receiver, String message) {
-        CollectionReference usersCollection = db.collection("messages");
+        CollectionReference usersCollection = db.collection("test_messages");
 
         HashMap<String, Object> messageData = new HashMap<>();
         Timestamp timestamp = Timestamp.now();
@@ -676,7 +676,7 @@ public class ChatSreenActivity extends BaseActivity {
     }
 
     private void sendFile(String sender, String receiver, String message) {
-        CollectionReference usersCollection = db.collection("messages");
+        CollectionReference usersCollection = db.collection("test_messages");
 
         HashMap<String, Object> messageData = new HashMap<>();
         Timestamp timestamp = Timestamp.now();
@@ -710,7 +710,7 @@ public class ChatSreenActivity extends BaseActivity {
 
 
     private void sendMessage(String sender, String receiver, String message) {
-        CollectionReference usersCollection = db.collection("messages");
+        CollectionReference usersCollection = db.collection("test_messages");
 
         HashMap<String, Object> messageData = new HashMap<>();
         Timestamp timestamp = Timestamp.now();
@@ -749,7 +749,7 @@ public class ChatSreenActivity extends BaseActivity {
 
     //Kiểm tra coi sender có bị receiver block hay không
     private void checkSenderIsBlock(String sender, String receiver){
-        CollectionReference contactCollection = db.collection("contact");
+        CollectionReference contactCollection = db.collection("test_contact");
         DocumentReference contactDocument = contactCollection.document(receiver);  // Truy vấn tài liệu contact có id bằng sender
 
         contactDocument.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -763,7 +763,7 @@ public class ChatSreenActivity extends BaseActivity {
                             check1 = false;
                         }
 
-                        DocumentReference userBlock = db.collection("users").document(sender);
+                        DocumentReference userBlock = db.collection("test_users").document(sender);
                         if (!block.contains(userBlock)) {
                             check1 = false;
                         }
@@ -780,7 +780,7 @@ public class ChatSreenActivity extends BaseActivity {
 
     //Kiểm tra sender đã chặn receiver thì 2 người không thể nhắn tin cho nhau được
     private void checkSenderIsBlockReceiver(String sender, String receiver){
-        CollectionReference contactCollection = db.collection("contact");
+        CollectionReference contactCollection = db.collection("test_contact");
         DocumentReference contactDocument = contactCollection.document(sender);  // Truy vấn tài liệu contact có id bằng sender
 
         contactDocument.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -794,7 +794,7 @@ public class ChatSreenActivity extends BaseActivity {
                             check2 = false;
                         }
 
-                        DocumentReference userBlock = db.collection("users").document(receiver);
+                        DocumentReference userBlock = db.collection("test_users").document(receiver);
                         if (!block.contains(userBlock)) {
                             check2 = false;
                         }
@@ -836,7 +836,7 @@ public class ChatSreenActivity extends BaseActivity {
     }
     private void readMessagesUser(final String myid, final String userid, final String imageurl) {
         mMessage.clear();
-        CollectionReference chatsCollection = db.collection("messages");
+        CollectionReference chatsCollection = db.collection("test_messages");
 
         chatsCollection.orderBy("timestamp", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -911,7 +911,7 @@ public class ChatSreenActivity extends BaseActivity {
 
     private void readMessagesGroup(final String myid, final String groupid) {
         mMessage.clear();
-        CollectionReference chatsCollection = db.collection("messages");
+        CollectionReference chatsCollection = db.collection("test_messages");
 
         chatsCollection.orderBy("timestamp", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -950,7 +950,7 @@ public class ChatSreenActivity extends BaseActivity {
 
     private void findDocumentMessageId(Message mess) {
         FirebaseFirestore firestore =FirebaseFirestore.getInstance();
-        CollectionReference cre = firestore.collection("messages");
+        CollectionReference cre = firestore.collection("test_messages");
 
         cre.whereEqualTo("message", mess.getMessage())
                 .whereEqualTo("receiver", mess.getReceiver())
@@ -991,7 +991,7 @@ public class ChatSreenActivity extends BaseActivity {
 
     private void deleteMessage(String messageId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference messagesRef = db.collection("messages");
+        CollectionReference messagesRef = db.collection("test_messages");
 
         HashMap<String, Object> updates = new HashMap<>();
         updates.put("message", "Nội dung đã bị gỡ");
@@ -1026,7 +1026,7 @@ public class ChatSreenActivity extends BaseActivity {
                 // Gọi hàm để xóa tin nhắn
 //                findDocumentMessageId(message);
                 Intent intent1=new Intent(getApplicationContext(), ForwardActivity.class);
-                intent1.putExtra("messages", message.getMessage());
+                intent1.putExtra("test_messages", message.getMessage());
                 intent1.putExtra("type",message.getType());
                 intent1.putExtra("title",message.getTitle());
                 startActivity(intent1);
@@ -1166,7 +1166,7 @@ public class ChatSreenActivity extends BaseActivity {
 
     protected void sendNotification(String sender, String receiver, boolean isGroup) {
         if (!isGroup) {
-            CollectionReference notificationCollection = db.collection("notification");
+            CollectionReference notificationCollection = db.collection("test_notification");
             //
             HashMap<String, Object> notification = new HashMap<>();
             Timestamp timestamp = Timestamp.now();
@@ -1179,7 +1179,7 @@ public class ChatSreenActivity extends BaseActivity {
             notificationCollection.add(notification);
         }
         else {//isGroup, receiver is group id BUT IN NOTIFICATION GROUP BECOME SENDER
-            DocumentReference docRef = db.collection("groups").document(receiver);
+            DocumentReference docRef = db.collection("test_groups").document(receiver);
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -1189,7 +1189,7 @@ public class ChatSreenActivity extends BaseActivity {
                             ArrayList<String> members = (ArrayList<String>) groupSnapshot.get("member");
                             for (String member : members) {
                                 if (!member.equals(sender)) {//gửi thông báo cho tất cả thành viên trong nhóm trừ người gửi
-                                    CollectionReference notificationCollection = db.collection("notification");
+                                    CollectionReference notificationCollection = db.collection("test_notification");
                                     //
                                     HashMap<String, Object> notification = new HashMap<>();
                                     Timestamp timestamp = Timestamp.now();

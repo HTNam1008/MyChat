@@ -232,7 +232,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 //            Toast.makeText(getApplicationContext(),uid,Toast.LENGTH_SHORT).show();
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-            CollectionReference usersCollection = db.collection("users");
+            CollectionReference usersCollection = db.collection("test_users");
             DocumentReference userDocument = usersCollection.document(uid);
 
             Map<String, Object> userData = new HashMap<>();

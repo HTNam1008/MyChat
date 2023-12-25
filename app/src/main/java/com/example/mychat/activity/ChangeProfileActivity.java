@@ -91,7 +91,7 @@ public class ChangeProfileActivity extends Activity {
 
         firestore = FirebaseFirestore.getInstance();
 
-        DocumentReference db = firestore.collection("users").document(auth.getCurrentUser().getUid());
+        DocumentReference db = firestore.collection("test_users").document(auth.getCurrentUser().getUid());
 
         db.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -313,7 +313,7 @@ public class ChangeProfileActivity extends Activity {
             String userId = auth.getCurrentUser().getUid();
 
             // Cập nhật trường "displayName" trong Firestore
-            DocumentReference userRef = firestore.collection("users").document(userId);
+            DocumentReference userRef = firestore.collection("test_users").document(userId);
             userRef
                     .update("username", newDisplayName)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -383,7 +383,7 @@ public class ChangeProfileActivity extends Activity {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         // Lưu đường dẫn hình ảnh vào Firestore
-        DocumentReference userRef = firestore.collection("users").document(userId);
+        DocumentReference userRef = firestore.collection("test_users").document(userId);
         userRef
                 .update("avatarUrl", imageUrl)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

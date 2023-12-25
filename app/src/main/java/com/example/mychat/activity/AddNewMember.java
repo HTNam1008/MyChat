@@ -85,7 +85,7 @@ public class AddNewMember extends Activity implements View.OnClickListener {
     }
     void getListOfMember(){
         db = FirebaseFirestore.getInstance();
-        docRef = db.collection("groups").document(groupID);
+        docRef = db.collection("test_groups").document(groupID);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -224,7 +224,7 @@ public class AddNewMember extends Activity implements View.OnClickListener {
 //        }
         userAdapter.clear();
         db = FirebaseFirestore.getInstance();
-        dref = db.collection("contact").document(auth.getCurrentUser().getUid());
+        dref = db.collection("test_contact").document(auth.getCurrentUser().getUid());
         dref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -342,14 +342,14 @@ public class AddNewMember extends Activity implements View.OnClickListener {
 
     private void saveMember() {
         FirebaseFirestore ff=FirebaseFirestore.getInstance();
-        CollectionReference contactCollection = ff.collection("groups");
+        CollectionReference contactCollection = ff.collection("test_groups");
         DocumentReference groupDocument = contactCollection.document(groupID);
 
         List<DocumentReference> userReferences = new ArrayList<>();
         for (User user : us) {
             String uid = user.getUid();
             // Tạo DocumentReference từ uid của mỗi người dùng và thêm vào danh sách
-            DocumentReference userReference = ff.collection("users").document(uid);
+            DocumentReference userReference = ff.collection("test_users").document(uid);
             userReferences.add(userReference);
         }
         // Đọc mảng hiện tại từ tài liệu
@@ -388,7 +388,7 @@ public class AddNewMember extends Activity implements View.OnClickListener {
     }
     private void saveGroupContact(String id,String uid) {
         FirebaseFirestore ff=FirebaseFirestore.getInstance();
-        CollectionReference contactCollection = ff.collection("contact");
+        CollectionReference contactCollection = ff.collection("test_contact");
         DocumentReference userDocument = contactCollection.document(uid);
         // Đọc mảng hiện tại từ tài liệu
         userDocument.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -397,16 +397,16 @@ public class AddNewMember extends Activity implements View.OnClickListener {
                 if (task.isSuccessful()) {
                     DocumentSnapshot documentSnapshot = task.getResult();
                     if (documentSnapshot.exists()) {
-                        List<DocumentReference> groups = (List<DocumentReference>) documentSnapshot.get("groups");
+                        List<DocumentReference> groups = (List<DocumentReference>) documentSnapshot.get("test_groups");
 
                         if (groups == null) {
                             groups = new ArrayList<>();
                         }
 
-                        if (!groups.contains(ff.collection("groups").document(id))) {
-                            groups.add(ff.collection("groups").document(id));
+                        if (!groups.contains(ff.collection("test_groups").document(id))) {
+                            groups.add(ff.collection("test_groups").document(id));
                             Map<String, Object> data = new HashMap<>();
-                            data.put("groups", groups);
+                            data.put("test_groups", groups);
                             // Sử dụng merge() để chỉ cập nhật trường 'groups' mà không thay đổi các trường khác
                             userDocument.set(data, SetOptions.merge())
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -447,7 +447,7 @@ public class AddNewMember extends Activity implements View.OnClickListener {
     private void saveUser(String userUid) {
         FirebaseFirestore ff=FirebaseFirestore.getInstance();
 
-        CollectionReference contactCollection = ff.collection("contact");
+        CollectionReference contactCollection = ff.collection("test_contact");
         DocumentReference userDocument = contactCollection.document(userUid);
 
         // Đọc mảng hiện tại từ tài liệu
@@ -482,7 +482,7 @@ public class AddNewMember extends Activity implements View.OnClickListener {
 
                     if (userAdds==null) {
                         userAdds= new ArrayList<>();
-                        userAdds.add(ff.collection("users").document(auth.getCurrentUser().getUid().toString()));
+                        userAdds.add(ff.collection("test_users").document(auth.getCurrentUser().getUid().toString()));
 
                         // Cập nhật tài liệu với danh sách mới
                         Map<String, Object> data = new HashMap<>();
@@ -498,8 +498,8 @@ public class AddNewMember extends Activity implements View.OnClickListener {
                                 });
                     }
                     // Thêm mới DocumentReference vào danh sách nếu chưa có
-                    if (!userAdds.contains(ff.collection("users").document(auth.getCurrentUser().getUid().toString()))) {
-                        userAdds.add(ff.collection("users").document(auth.getCurrentUser().getUid().toString()));
+                    if (!userAdds.contains(ff.collection("test_users").document(auth.getCurrentUser().getUid().toString()))) {
+                        userAdds.add(ff.collection("test_users").document(auth.getCurrentUser().getUid().toString()));
 
                         // Cập nhật tài liệu với danh sách mới
                         Map<String, Object> data = new HashMap<>();
@@ -521,7 +521,7 @@ public class AddNewMember extends Activity implements View.OnClickListener {
     private void saveUserContact(String email, String name) {
         final String[] uid=new String[1];
         FirebaseFirestore ff=FirebaseFirestore.getInstance();
-        CollectionReference userCollection = ff.collection("users");
+        CollectionReference userCollection = ff.collection("test_users");
         userCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -533,7 +533,7 @@ public class AddNewMember extends Activity implements View.OnClickListener {
                         }
                     }
                     if (uid[0]!=null) {
-                        CollectionReference contactCollection = ff.collection("contact");
+                        CollectionReference contactCollection = ff.collection("test_contact");
                         DocumentReference userDocument = contactCollection.document(auth.getCurrentUser().getUid().toString());
 
                         // Đọc mảng hiện tại từ tài liệu
@@ -547,8 +547,8 @@ public class AddNewMember extends Activity implements View.OnClickListener {
                                         List<DocumentReference> userAdds = (List<DocumentReference>) documentSnapshot.get("userContact");
 
                                         // Thêm mới DocumentReference vào danh sách nếu chưa có
-                                        if (!userAdds.contains(ff.collection("users").document(uid[0]))) {
-                                            userAdds.add(ff.collection("users").document(uid[0]));
+                                        if (!userAdds.contains(ff.collection("test_users").document(uid[0]))) {
+                                            userAdds.add(ff.collection("test_users").document(uid[0]));
 
                                             // Cập nhật tài liệu với danh sách mới
                                             Map<String, Object> data = new HashMap<>();

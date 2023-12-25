@@ -172,7 +172,7 @@ public class ConversationInformationActivity extends BaseActivity {
     }
     private void checkUserBlocked(String myID, String userID){
 
-        CollectionReference contactCollection = db.collection("contact");
+        CollectionReference contactCollection = db.collection("test_contact");
         DocumentReference contactDocument = contactCollection.document(myID);
         contactDocument.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -182,7 +182,7 @@ public class ConversationInformationActivity extends BaseActivity {
                     if (documentSnapshot.exists()) {
                         List<DocumentReference> blockList = (List<DocumentReference>) documentSnapshot.get("block");
                         if (blockList != null) {
-                            DocumentReference userToCheck = db.collection("users").document(userID);
+                            DocumentReference userToCheck = db.collection("test_users").document(userID);
                             isUserBlocked = blockList.contains(userToCheck);
                         } else {
                             isUserBlocked = false;
@@ -206,12 +206,12 @@ public class ConversationInformationActivity extends BaseActivity {
     }
     private void leaveChat(){
         FirebaseFirestore ff = FirebaseFirestore.getInstance();
-        CollectionReference contactCollection = ff.collection("groups");
+        CollectionReference contactCollection = ff.collection("test_groups");
         DocumentReference groupDocument = contactCollection.document(userID);
         FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
 
         String uidToRemove=fUser.getUid();
-        DocumentReference userReferenceToRemove = ff.collection("users").document(uidToRemove);
+        DocumentReference userReferenceToRemove = ff.collection("test_users").document(uidToRemove);
 
         groupDocument.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -246,12 +246,12 @@ public class ConversationInformationActivity extends BaseActivity {
         FirebaseFirestore ff = FirebaseFirestore.getInstance();
         FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        CollectionReference contactCollection = ff.collection("contact");
+        CollectionReference contactCollection = ff.collection("test_contact");
         DocumentReference groupDocument = contactCollection.document(fUser.getUid());
 
 
         String uidToRemove=userID;
-        DocumentReference groupReferenceToRemove = ff.collection("groups").document(uidToRemove);
+        DocumentReference groupReferenceToRemove = ff.collection("test_groups").document(uidToRemove);
 
         groupDocument.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -259,14 +259,14 @@ public class ConversationInformationActivity extends BaseActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot documentSnapshot = task.getResult();
                     if (documentSnapshot.exists()) {
-                        List<DocumentReference> groups = (List<DocumentReference>) documentSnapshot.get("groups");
+                        List<DocumentReference> groups = (List<DocumentReference>) documentSnapshot.get("test_groups");
                         if (groups == null) {
                             return;
                         }
                         // Xóa DocumentReference cụ thể khỏi danh sách members
                         groups.remove(groupReferenceToRemove);
                         Map<String, Object> data = new HashMap<>();
-                        data.put("groups", groups);
+                        data.put("test_groups", groups);
 
                         // Sử dụng merge() để chỉ cập nhật trường 'member' mà không thay đổi các trường khác
                         groupDocument.set(data, SetOptions.merge())
@@ -344,7 +344,7 @@ public class ConversationInformationActivity extends BaseActivity {
         Map<String, Object> updateData = new HashMap<>();
         updateData.put("username", newUsername);
 
-        db.collection("groups")
+        db.collection("test_groups")
                 .document(userID)
                 .update(updateData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -409,7 +409,7 @@ public class ConversationInformationActivity extends BaseActivity {
 
     private void blockUser(String myId, String userId){
 
-        CollectionReference contactCollection = db.collection("contact");
+        CollectionReference contactCollection = db.collection("test_contact");
         // Truy vấn tài liệu contact có id bằng myId
         DocumentReference contactDocument = contactCollection.document(myId);
 
@@ -427,7 +427,7 @@ public class ConversationInformationActivity extends BaseActivity {
                         }
 
                         // Tạo một DocumentReference mới dựa trên userId
-                        DocumentReference userBlock = db.collection("users").document(userId);
+                        DocumentReference userBlock = db.collection("test_users").document(userId);
 
                         if (!blockAdds.contains(userBlock)) {
                             blockAdds.add(userBlock);
@@ -473,7 +473,7 @@ public class ConversationInformationActivity extends BaseActivity {
 
     private void unblockUser(String myId, String userId){
 
-        CollectionReference contactCollection = db.collection("contact");
+        CollectionReference contactCollection = db.collection("test_contact");
         DocumentReference contactDocument = contactCollection.document(myId); // Truy vấn tài liệu contact có id bằng myId
 
         contactDocument.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -483,7 +483,7 @@ public class ConversationInformationActivity extends BaseActivity {
                     DocumentSnapshot documentSnapshot = task.getResult();
                     if (documentSnapshot.exists()) {
                         List<DocumentReference> blockLists = (List<DocumentReference>) documentSnapshot.get("block");
-                        DocumentReference userBlock = db.collection("users").document(userId);
+                        DocumentReference userBlock = db.collection("test_users").document(userId);
 
                         if (blockLists != null && blockLists.contains(userBlock)) {
                             blockLists.remove(userBlock);
@@ -548,7 +548,7 @@ public class ConversationInformationActivity extends BaseActivity {
     }
 
     private void deleteChat(String myId, String userId){
-        CollectionReference messagesCollection = db.collection("messages");
+        CollectionReference messagesCollection = db.collection("test_messages");
 
         // Tìm tất cả tin nhắn có sender = myId và receiver = userId
         Query message1 = messagesCollection
@@ -572,7 +572,7 @@ public class ConversationInformationActivity extends BaseActivity {
                     data.put("sender", "");
                     data.put("sender_delete", myId);
 
-                    db.collection("messages").document(messageId)
+                    db.collection("test_messages").document(messageId)
                             .update(data)
                             .addOnSuccessListener(aVoid -> {
 
@@ -588,7 +588,7 @@ public class ConversationInformationActivity extends BaseActivity {
                     data.put("receiver", "");
                     data.put("receiver_delete", myId);
 
-                    db.collection("messages").document(messageId)
+                    db.collection("test_messages").document(messageId)
                             .update(data)
                             .addOnSuccessListener(aVoid -> {
 

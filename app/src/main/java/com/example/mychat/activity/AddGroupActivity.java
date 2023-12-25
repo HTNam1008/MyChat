@@ -160,7 +160,7 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
     protected void getContactExists() {
         userAdapter.clear();
         db = FirebaseFirestore.getInstance();
-        dref = db.collection("contact").document(auth.getCurrentUser().getUid());
+        dref = db.collection("test_contact").document(auth.getCurrentUser().getUid());
         dref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -269,7 +269,7 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
 
     private void saveGroup() {
         FirebaseFirestore ff=FirebaseFirestore.getInstance();
-        CollectionReference groupCollection = ff.collection("groups");
+        CollectionReference groupCollection = ff.collection("test_groups");
 
         List<DocumentReference> userReferences = new ArrayList<>();
         StringBuilder n=new StringBuilder("Nhóm của "+auth.getCurrentUser().getDisplayName()+" ");
@@ -277,11 +277,11 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
         for (User user : us) {
             String uid = user.getUid();
             // Tạo DocumentReference từ uid của mỗi người dùng và thêm vào danh sách
-            DocumentReference userReference = ff.collection("users").document(uid);
+            DocumentReference userReference = ff.collection("test_users").document(uid);
             userReferences.add(userReference);
             n.append(", ").append(user.getName());
         }
-        userReferences.add(ff.collection("users").document(auth.getCurrentUser().getUid()));
+        userReferences.add(ff.collection("test_users").document(auth.getCurrentUser().getUid()));
 
         String name=n.toString();
         HashMap<String, Object> groupInfo = new HashMap<>();
@@ -310,7 +310,7 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
     }
     private void saveGroupContact(String id,String uid) {
         FirebaseFirestore ff=FirebaseFirestore.getInstance();
-        CollectionReference contactCollection = ff.collection("contact");
+        CollectionReference contactCollection = ff.collection("test_contact");
         DocumentReference userDocument = contactCollection.document(uid);
         // Đọc mảng hiện tại từ tài liệu
         userDocument.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -319,16 +319,16 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
                 if (task.isSuccessful()) {
                     DocumentSnapshot documentSnapshot = task.getResult();
                     if (documentSnapshot.exists()) {
-                        List<DocumentReference> groups = (List<DocumentReference>) documentSnapshot.get("groups");
+                        List<DocumentReference> groups = (List<DocumentReference>) documentSnapshot.get("test_groups");
 
                         if (groups == null) {
                             groups = new ArrayList<>();
                         }
 
-                        if (!groups.contains(ff.collection("groups").document(id))) {
-                            groups.add(ff.collection("groups").document(id));
+                        if (!groups.contains(ff.collection("test_groups").document(id))) {
+                            groups.add(ff.collection("test_groups").document(id));
                             Map<String, Object> data = new HashMap<>();
-                            data.put("groups", groups);
+                            data.put("test_groups", groups);
                             // Sử dụng merge() để chỉ cập nhật trường 'groups' mà không thay đổi các trường khác
                             userDocument.set(data, SetOptions.merge())
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -347,7 +347,7 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
 
 
     private void sendMessage(String sender, String receiver, String message) {
-        CollectionReference usersCollection = db.collection("messages");
+        CollectionReference usersCollection = db.collection("test_messages");
 
         HashMap<String, Object> messageData = new HashMap<>();
         Timestamp timestamp = Timestamp.now();

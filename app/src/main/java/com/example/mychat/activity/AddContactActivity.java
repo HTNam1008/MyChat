@@ -36,6 +36,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -147,7 +148,7 @@ public class AddContactActivity extends Activity implements View.OnClickListener
         user.clear();
         final String emailToCheck = editText.getText().toString().trim();
         db = FirebaseFirestore.getInstance();
-        cref = db.collection("users");
+        cref = db.collection("test_users");
         cref.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -185,7 +186,7 @@ public class AddContactActivity extends Activity implements View.OnClickListener
     }
 
     private void sendMessage(String sender, String receiver, String message) {
-        CollectionReference usersCollection = db.collection("messages");
+        CollectionReference usersCollection = db.collection("test_messages");
 
         HashMap<String, Object> messageData = new HashMap<>();
         Timestamp timestamp = Timestamp.now();
@@ -259,7 +260,7 @@ public class AddContactActivity extends Activity implements View.OnClickListener
     private void saveUser(String userUid) {
         FirebaseFirestore ff=FirebaseFirestore.getInstance();
 
-        CollectionReference contactCollection = ff.collection("contact");
+        CollectionReference contactCollection = ff.collection("test_contact");
         DocumentReference userDocument = contactCollection.document(userUid);
 
         // Đọc mảng hiện tại từ tài liệu
@@ -292,7 +293,7 @@ public class AddContactActivity extends Activity implements View.OnClickListener
 
                     if (userAdds==null) {
                         userAdds= new ArrayList<>();
-                        userAdds.add(ff.collection("users").document(auth.getCurrentUser().getUid().toString()));
+                        userAdds.add(ff.collection("test_users").document(auth.getCurrentUser().getUid().toString()));
 
                         // Cập nhật tài liệu với danh sách mới
                         Map<String, Object> data = new HashMap<>();
@@ -308,8 +309,8 @@ public class AddContactActivity extends Activity implements View.OnClickListener
                                 });
                     }
                     // Thêm mới DocumentReference vào danh sách nếu chưa có
-                    if (!userAdds.contains(ff.collection("users").document(auth.getCurrentUser().getUid().toString()))) {
-                        userAdds.add(ff.collection("users").document(auth.getCurrentUser().getUid().toString()));
+                    if (!userAdds.contains(ff.collection("test_users").document(auth.getCurrentUser().getUid().toString()))) {
+                        userAdds.add(ff.collection("test_users").document(auth.getCurrentUser().getUid().toString()));
 
                         // Cập nhật tài liệu với danh sách mới
                         Map<String, Object> data = new HashMap<>();
@@ -330,38 +331,35 @@ public class AddContactActivity extends Activity implements View.OnClickListener
         });
     }
     private void saveUserContact(String email, String name) {
-        final String[] uid=new String[1];
-        FirebaseFirestore ff=FirebaseFirestore.getInstance();
-        CollectionReference userCollection = ff.collection("users");
+        final String[] uid = new String[1];
+        FirebaseFirestore ff = FirebaseFirestore.getInstance();
+        CollectionReference userCollection = ff.collection("test_users");
+
         userCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot document : task.getResult()) {
-                        if(Objects.equals(document.getString("email"), email) && Objects.equals(document.getString("username"), name)){
-                            uid[0] =document.getId();
+                        if (Objects.equals(document.getString("email"), email) && Objects.equals(document.getString("username"), name)) {
+                            uid[0] = document.getId();
                             break;
                         }
                     }
-                    if (uid[0]!=null) {
-                        CollectionReference contactCollection = ff.collection("contact");
+                    if (uid[0] != null) {
+                        CollectionReference contactCollection = ff.collection("test_contact");
                         DocumentReference userDocument = contactCollection.document(auth.getCurrentUser().getUid().toString());
 
-                        // Đọc mảng hiện tại từ tài liệu
                         userDocument.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 if (task.isSuccessful()) {
                                     DocumentSnapshot documentSnapshot = task.getResult();
                                     if (documentSnapshot.exists()) {
-                                        // Đọc danh sách hiện tại từ tài liệu
                                         List<DocumentReference> userAdds = (List<DocumentReference>) documentSnapshot.get("userContact");
 
-                                        // Thêm mới DocumentReference vào danh sách nếu chưa có
-                                        if (!userAdds.contains(ff.collection("users").document(uid[0]))) {
-                                            userAdds.add(ff.collection("users").document(uid[0]));
+                                        if (!userAdds.contains(ff.collection("test_users").document(uid[0]))) {
+                                            userAdds.add(ff.collection("test_users").document(uid[0]));
 
-                                            // Cập nhật tài liệu với danh sách mới
                                             Map<String, Object> data = new HashMap<>();
                                             data.put("userContact", userAdds);
 
@@ -369,16 +367,34 @@ public class AddContactActivity extends Activity implements View.OnClickListener
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
-                                                            // Xử lý khi hoàn thành (nếu cần)
-                                                            showNiceDialogBox(true);
-                                                            saveUser(userAdd.getUid());
-
+                                                            if (task.isSuccessful()) {
+                                                                showNiceDialogBox(true);
+                                                                saveUser(userAdd.getUid());
+                                                            } else {
+                                                                Log.d("TAG", "Lỗi khi cập nhật tài liệu: ", task.getException());
+                                                            }
                                                         }
                                                     });
-                                        }
-                                        else{
+                                        } else {
                                             showNiceDialogBox(false);
                                         }
+                                    } else {
+                                        // Tạo document mới nếu không tồn tại
+                                        Map<String, Object> newData = new HashMap<>();
+                                        newData.put("userContact", Collections.singletonList(ff.collection("test_users").document(uid[0])));
+
+                                        userDocument.set(newData)
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            showNiceDialogBox(true);
+                                                            saveUser(userAdd.getUid());
+                                                        } else {
+                                                            Log.d("TAG", "Lỗi khi tạo tài liệu mới: ", task.getException());
+                                                        }
+                                                    }
+                                                });
                                     }
                                 } else {
                                     Log.d("TAG", "Lỗi khi lấy dữ liệu: ", task.getException());
@@ -392,4 +408,5 @@ public class AddContactActivity extends Activity implements View.OnClickListener
             }
         });
     }
+
 }

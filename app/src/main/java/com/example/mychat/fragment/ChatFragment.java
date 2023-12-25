@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -172,7 +173,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Adap
         });
     }
     private void getListGroup() {
-        CollectionReference cGroup = FirebaseFirestore.getInstance().collection("groups");
+        CollectionReference cGroup = FirebaseFirestore.getInstance().collection("test_groups");
         AtomicInteger tasksCompleted = new AtomicInteger(0);
         AtomicInteger totalTasks = new AtomicInteger(0); // Số lượng tác vụ cần hoàn thành
         cGroup.get().addOnCompleteListener(task -> {
@@ -207,20 +208,27 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Adap
                         }
                     }
                 }
+
+                // Kiểm tra nếu không có tác vụ nào được thêm vào totalTasks
+                if (totalTasks.get() == 0) {
+                    // Gọi getListUserFromDatabase() ngay tại đây
+                    getListUserFromDatabase();
+                }
             }
         });
     }
+
 
     private void getListUserFromDatabase() {
         user.clear();
 //        user = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
         //get MESSAGE collection
-        cref = db.collection("messages");
+        cref = db.collection("test_messages");
         //get user's id
         String currentUser = auth.getCurrentUser().getUid().toString();
         //
-        Query user2contact = cref.whereEqualTo("sender", currentUser).orderBy("timestamp", Query.Direction.DESCENDING);
+
         Query contact2user = cref.whereEqualTo("receiver", currentUser).orderBy("timestamp", Query.Direction.DESCENDING);
 
         Task<QuerySnapshot> g2uTask=null;
@@ -248,6 +256,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Adap
             });
         }
         //Toast.makeText(context,auth.getCurrentUser().getUid().toString(), Toast.LENGTH_SHORT).show();
+        Query user2contact = cref.whereEqualTo("sender", currentUser).orderBy("timestamp", Query.Direction.DESCENDING);
         Task<QuerySnapshot> u2cTask = user2contact.get();
         Task<QuerySnapshot> c2uTask = contact2user.get();
 
@@ -260,6 +269,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Adap
                     // Xử lý trường hợp task thất bại
                     Exception e = task.getException();
                     if (e != null) {
+                        Log.e("FirestoreError", "Lỗi khi lấy dữ liệu: " + e.getMessage());
                         Toast.makeText(getActivity(),"fail 1",Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -275,6 +285,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Adap
                     // Xử lý trường hợp task thất bại
                     Exception e = task.getException();
                     if (e != null) {
+                        Log.e("FirestoreError", "Lỗi khi lấy dữ liệu: " + e.getMessage());
+
                         Toast.makeText(getActivity(),"fail 2",Toast.LENGTH_SHORT).show();
 
                     }
@@ -361,8 +373,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Adap
 
 
                     final int[] counter = {0};
-                    CollectionReference userRef = db.collection("users");
-                    CollectionReference groupRef = db.collection("groups");
+                    CollectionReference userRef = db.collection("test_users");
+                    CollectionReference groupRef = db.collection("test_groups");
 
                     for (DocumentSnapshot d : result) {
                         String latestMessage = d.getString("message");

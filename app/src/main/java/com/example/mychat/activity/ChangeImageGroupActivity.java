@@ -84,7 +84,7 @@ public class ChangeImageGroupActivity extends Activity {
 
         firestore = FirebaseFirestore.getInstance();
 
-        DocumentReference db = firestore.collection("groups").document(groupId);
+        DocumentReference db = firestore.collection("test_groups").document(groupId);
 
         db.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -172,7 +172,7 @@ public class ChangeImageGroupActivity extends Activity {
     private void saveImageUrlToFirestore(String imageUrl) {
 
         // Lưu đường dẫn hình ảnh vào Firestore
-        DocumentReference userRef = firestore.collection("groups").document(groupId);
+        DocumentReference userRef = firestore.collection("test_groups").document(groupId);
         userRef
                 .update("avatarUrl", imageUrl)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

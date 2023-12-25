@@ -131,7 +131,7 @@ public class ForgotPasswordActivity extends Activity implements View.OnClickList
     }
 
     private void getListEmailUser(){
-        collectionReference=db.collection("users");
+        collectionReference=db.collection("test_users");
         collectionReference.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

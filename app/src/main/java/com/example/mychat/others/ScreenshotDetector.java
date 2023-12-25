@@ -68,14 +68,14 @@ public class ScreenshotDetector extends ContentObserver {
     }
     private void screenshotNotification() {
         db = FirebaseFirestore.getInstance();
-        db.collection("users").document(sender).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        db.collection("test_users").document(sender).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
                     //
                     String username = documentSnapshot.getString("username");
                     //
-                    CollectionReference usersCollection = db.collection("messages");
+                    CollectionReference usersCollection = db.collection("test_messages");
                     //
                     HashMap<String, Object> messageData = new HashMap<>();
                     Timestamp timestamp = Timestamp.now();

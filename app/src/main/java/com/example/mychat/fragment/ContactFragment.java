@@ -133,7 +133,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener, A
         user = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
         //get CONTACT collection
-        cref = db.collection("contact");
+        cref = db.collection("test_contact");
         DocumentReference doc = cref.document(auth.getCurrentUser().getUid());
         doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -143,7 +143,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener, A
                     if (documentSnapshot.exists()) { //get EVERY documents within the collection
                         //get the userContact array
                         List<DocumentReference> docUser = (List<DocumentReference>) documentSnapshot.get("userContact");
-                        List<DocumentReference> docGroup = (List<DocumentReference>) documentSnapshot.get("groups");
+                        List<DocumentReference> docGroup = (List<DocumentReference>) documentSnapshot.get("test_groups");
                         if (docGroup!=null) {
                             docUser.addAll(docGroup);
                         }

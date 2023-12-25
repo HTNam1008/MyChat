@@ -191,7 +191,7 @@ public class MessageGroupAdapter extends RecyclerView.Adapter<MessageGroupAdapte
 
     private void setAvatarUrl(@NonNull ViewHolder holder, Message message) {
         final String[] img = {null};
-        DocumentReference doc = FirebaseFirestore.getInstance().collection("users").document(message.getSender());
+        DocumentReference doc = FirebaseFirestore.getInstance().collection("test_users").document(message.getSender());
         doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

@@ -67,7 +67,7 @@ public class MessageNotification extends Service {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser().getUid().toString();
         db = FirebaseFirestore.getInstance();
-        ref = db.collection("notification");
+        ref = db.collection("test_notification");
         ref.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot querySnapshot, @Nullable FirebaseFirestoreException error) {
@@ -83,13 +83,13 @@ public class MessageNotification extends Service {
                             if (receiver.equals(currentUser)) { //lấy những bộ mà người dùng là receiver
                                 //lấy id bộ thông báo để xóa sau khi đọc thông báo xong
                                 String idNotification = docSnap.getId();
-                                DocumentReference notifyDoc = db.collection("notification").document(idNotification);
+                                DocumentReference notifyDoc = db.collection("test_notification").document(idNotification);
                                 //lấy thông tin người gửi, check xem tin nhắn có phải từ nhóm hay không
                                 String sender = docSnap.getString("sender");
                                 boolean isGroup = docSnap.getBoolean("isGroup");
                                 DocumentReference userDoc;
-                                if (isGroup) userDoc = db.collection("groups").document(sender);
-                                else userDoc = db.collection("users").document(sender);
+                                if (isGroup) userDoc = db.collection("test_groups").document(sender);
+                                else userDoc = db.collection("test_users").document(sender);
                                 userDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -114,7 +114,7 @@ public class MessageNotification extends Service {
     }
     //
     private void checkToSend(String from, String sender, boolean isGroup) {
-        DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(currentUser);
+        DocumentReference docRef = FirebaseFirestore.getInstance().collection("test_users").document(currentUser);
         //check if offline, send notification
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override

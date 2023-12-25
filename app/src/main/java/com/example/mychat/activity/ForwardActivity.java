@@ -83,7 +83,7 @@ public class ForwardActivity extends Activity implements View.OnClickListener {
             // Kiểm tra xem Bundle có dữ liệu không
             if (bundle != null) {
                 // Lấy giá trị từ Bundle bằng key
-                mess = bundle.getString("messages");
+                mess = bundle.getString("test_messages");
                 type=bundle.getString("type");
                 title=bundle.getString("title");
             }
@@ -122,7 +122,7 @@ public class ForwardActivity extends Activity implements View.OnClickListener {
     protected void getContactExists() {
         userAdapter.clear();
         db = FirebaseFirestore.getInstance();
-        dref = db.collection("contact").document(auth.getCurrentUser().getUid());
+        dref = db.collection("test_contact").document(auth.getCurrentUser().getUid());
         dref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -237,7 +237,7 @@ public class ForwardActivity extends Activity implements View.OnClickListener {
 
 
     private void sendMessage(String sender, String receiver, String message,String type,String title) {
-        CollectionReference usersCollection = db.collection("messages");
+        CollectionReference usersCollection = db.collection("test_messages");
 
         HashMap<String, Object> messageData = new HashMap<>();
         Timestamp timestamp = Timestamp.now();
