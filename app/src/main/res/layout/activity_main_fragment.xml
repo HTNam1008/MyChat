@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/main_holder"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            />
+<!--        <androidx.viewpager.widget.ViewPager-->
+<!--            android:id="@+id/viewPager"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="1"-->
+
+<!--           />-->
+
+        <nl.joery.animatedbottombar.AnimatedBottomBar
+            android:id="@+id/bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_gravity="bottom"
+            android:background="#1E90FF"
+            app:abb_indicatorAppearance="round"
+            app:abb_indicatorColor="#0000FF"
+            app:abb_indicatorHeight="4dp"
+            app:abb_indicatorLocation="bottom"
+            app:abb_indicatorMargin="16dp"
+            app:abb_selectedIndex="0"
+            app:abb_selectedTabType="icon"
+            app:abb_tabAnimationSelected="slide"
+            app:abb_tabColor="@color/white"
+            app:abb_tabColorSelected="@color/white"
+            app:abb_tabs="@menu/menu"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </LinearLayout>
+
+</LinearLayout>

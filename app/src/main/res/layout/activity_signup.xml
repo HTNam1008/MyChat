@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.main.SignupActivity"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    tools:ignore="ExtraText">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <TextView
+            style="@style/TEXT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Account"
+            android:layout_marginTop="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/blue"
+            android:textSize="30dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Connect with your friends today!"
+            android:textColor="#676767"
+            android:textFontWeight="400"
+            android:textSize="15dp"
+            tools:ignore="TextSizeCheck" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="30dp">
+            <TextView
+                style="@style/TEXT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email Address"
+                android:textStyle="bold"/>
+
+            <EditText
+                style="@style/EDITTEXT"
+                android:id="@+id/edtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Enter your email"
+                android:inputType="textEmailAddress"
+                android:minHeight="45dp"
+                android:paddingLeft="16dp"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
+            <TextView
+                style="@style/TEXT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/user_name"
+                android:textStyle="bold"/>
+            <EditText
+                style="@style/EDITTEXT"
+                android:id="@+id/edtUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Enter your user name"
+                android:inputType="text"
+                android:minHeight="45dp"
+                android:paddingLeft="16dp"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
+            <TextView
+                style="@style/TEXT"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/password"
+                android:textStyle="bold">
+
+            </TextView>
+            <EditText
+                style="@style/EDITTEXT"
+                android:id="@+id/edtPass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:layout_marginTop="8dp"
+                android:hint="Enter Your Password"
+                android:textSize="16sp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+            </EditText>
+        </LinearLayout>
+
+
+        <CheckBox
+            style="@style/TEXT"
+            android:layout_marginTop="10dp"
+            android:id="@+id/checkAgree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="I agree to the terms and conditions"
+            android:textStyle="bold">
+        </CheckBox>
+
+
+        <Button
+            android:id="@+id/btnSignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="Sign Up"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_login">
+        </Button>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="invisible">
+        </ProgressBar>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center_horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/login_account"
+                android:layout_gravity="bottom"
+                android:textColor="@color/gray">
+            </TextView>
+
+            <TextView
+                android:id="@+id/btnLogIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/log_in"
+                android:textColor="@color/blue"
+                android:layout_gravity="bottom"
+                android:clickable="true">
+            </TextView>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+
